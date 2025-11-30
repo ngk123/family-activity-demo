@@ -1,25 +1,36 @@
 import { useState } from 'react';
 import ActivityForm from './components/ActivityForm';
 import RecommendationList from './components/RecommendationList';
-import { dummyRecommendations } from './data/dummyRecommendations';
+import LoadingSpinner from './components/LoadingSpinner';
+import ErrorMessage from './components/ErrorMessage';
+import { fetchRecommendations } from './services/api';
 import './App.css';
 
 function App() {
   const [recommendations, setRecommendations] = useState([]);
   const [hasSearched, setHasSearched] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const handleFormSubmit = (formData) => {
-    // For Milestone 1, we just show dummy data
-    // In Milestone 2, this will call the backend API
+  const handleFormSubmit = async (formData) => {
     console.log('Form submitted with data:', formData);
 
-    // Simulate a brief loading state
+    // Reset states
+    setIsLoading(true);
+    setError(null);
     setRecommendations([]);
-    setHasSearched(true);
 
-    setTimeout(() => {
-      setRecommendations(dummyRecommendations);
-    }, 500);
+    try {
+      // Call backend API
+      const data = await fetchRecommendations(formData);
+      setRecommendations(data.recommendations);
+      setHasSearched(true);
+    } catch (err) {
+      setError(err.message);
+      console.error('Error fetching recommendations:', err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -34,11 +45,15 @@ function App() {
       <main className="app-main">
         <div className="app-content">
           <div className="form-section">
-            <ActivityForm onSubmit={handleFormSubmit} />
+            <ActivityForm onSubmit={handleFormSubmit} isLoading={isLoading} />
           </div>
 
           <div className="results-section">
-            {hasSearched ? (
+            {isLoading ? (
+              <LoadingSpinner />
+            ) : error ? (
+              <ErrorMessage error={error} onRetry={() => setError(null)} />
+            ) : hasSearched ? (
               <RecommendationList recommendations={recommendations} />
             ) : (
               <div className="empty-state">
@@ -50,7 +65,7 @@ function App() {
       </main>
 
       <footer className="app-footer">
-        <p>Built with React + Vite • Milestone 1: UI with Dummy Data ✅</p>
+        <p>Built with React + Express + Claude API • Milestone 2: Live Recommendations ✅</p>
       </footer>
     </div>
   );

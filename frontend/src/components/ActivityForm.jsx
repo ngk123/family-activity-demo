@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './ActivityForm.css';
 
-function ActivityForm({ onSubmit }) {
+function ActivityForm({ onSubmit, isLoading }) {
   const [formData, setFormData] = useState({
     city: '',
     minAge: 5,
@@ -147,8 +147,8 @@ function ActivityForm({ onSubmit }) {
         </div>
       </div>
 
-      <button type="submit" className="submit-btn">
-        Find Activities 🔍
+      <button type="submit" className="submit-btn" disabled={isLoading}>
+        {isLoading ? 'Searching...' : 'Find Activities 🔍'}
       </button>
     </form>
   );

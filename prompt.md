@@ -68,7 +68,7 @@ According to the Claude API documentation, enable web search by including it in 
 
 ```javascript
 const response = await anthropic.messages.create({
-  model: "claude-3-7-sonnet-20250219",
+  model: "claude-4-sonnet",
   max_tokens: 4096,
   tools: [{
     type: "web_search"
