@@ -1,0 +1,44 @@
+.recommendation-card {
+  background: var(--bg-white);
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+  transition: transform 0.2s, box-shadow 0.2s;
+  height: 100%;
+}
+
+.recommendation-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary-color);
+}
+
+.card-title {
+  color: var(--text-dark);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  line-height: 1.4;
+}
+
+.card-description {
+  color: var(--text-light);
+  font-size: 0.9375rem;
+  line-height: 1.7;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .recommendation-card {
+    padding: 1.25rem;
+  }
+
+  .card-title {
+    font-size: 1.125rem;
+  }
+
+  .card-description {
+    font-size: 0.875rem;
+  }
+}
